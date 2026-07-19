@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<!--
+  组会文献解读单文件 HTML 模板。
+  使用方法：把各章节内容填入 <main> 中；图片一律用 base64 data URI 内嵌
+  （<img src="data:image/png;base64,...">），保证单文件离线可用。
+  公式：行内 $...$，独立 $$...$$，由 KaTeX auto-render 处理（需联网加载 CDN；
+  若组会现场无网络，公式会显示为原始 LaTeX，不影响正文阅读）。
+  目录：为每个 h2 设置 id，nav 中的链接与之对应；章节增减时同步更新 nav。
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>【论文短标题】· 组会文献解读</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
+<style>
+  :root{
+    --ink:#1a2233; --muted:#5b6473; --line:#e3e6ec; --bg:#fafbfd;
+    --accent:#1f5fa8; --accent-bg:#eef4fb; --warn-bg:#fff7ec; --warn-line:#e8b96b;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.85 "Source Han Serif SC","Noto Serif CJK SC","Songti SC",Georgia,serif;}
+  header{background:#fff;border-bottom:1px solid var(--line);padding:36px 24px 28px;text-align:center}
+  header h1{font-size:26px;margin:0 0 6px}
+  header .sub{color:var(--muted);font-size:14px}
+  .layout{max-width:1180px;margin:0 auto;display:flex;gap:32px;padding:32px 24px}
+  nav{width:220px;flex-shrink:0;position:sticky;top:24px;align-self:flex-start;
+    font-size:13.5px;line-height:2;border-right:1px solid var(--line);padding-right:16px}
+  nav a{color:var(--muted);text-decoration:none;display:block}
+  nav a:hover{color:var(--accent)}
+  main{flex:1;min-width:0;max-width:820px}
+  h2{font-size:21px;border-left:4px solid var(--accent);padding-left:12px;margin:2.2em 0 .8em}
+  h3{font-size:17px;margin:1.6em 0 .5em}
+  p{margin:.7em 0}
+  .infocard{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px 22px;font-size:14.5px}
+  .infocard td{padding:3px 10px;vertical-align:top}
+  .infocard td:first-child{color:var(--muted);white-space:nowrap}
+  .oneliner{background:var(--accent-bg);border-radius:10px;padding:16px 20px;font-size:17px}
+  figure{margin:1.6em 0;background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px}
+  figure img{max-width:100%;display:block;margin:0 auto}
+  figcaption{font-size:13.5px;color:var(--muted);margin-top:10px;line-height:1.7}
+  figcaption b{color:var(--ink)}
+  .panel-read{background:#fff;border:1px solid var(--line);border-left:4px solid var(--accent);
+    border-radius:0 8px 8px 0;padding:12px 18px;margin:1em 0;font-size:15px}
+  .story{background:var(--warn-bg);border:1px solid var(--warn-line);border-radius:8px;
+    padding:10px 16px;font-size:14.5px;margin:1em 0}
+  .story::before{content:"故事线定位 · ";font-weight:700}
+  table{border-collapse:collapse;width:100%;font-size:14.5px;background:#fff}
+  th,td{border:1px solid var(--line);padding:7px 10px;text-align:left}
+  th{background:var(--accent-bg)}
+  blockquote{border-left:3px solid var(--line);margin:1em 0;padding:.2em 1em;color:var(--muted)}
+  .tag{display:inline-block;background:var(--accent-bg);color:var(--accent);border-radius:4px;
+    padding:1px 8px;font-size:12.5px;margin-right:6px}
+  .note{font-size:13px;color:var(--muted)}
+  footer{color:var(--muted);font-size:12.5px;text-align:center;padding:28px;border-top:1px solid var(--line);margin-top:48px}
+  @media (max-width:860px){nav{display:none}.layout{padding:20px 14px}}
+  @media print{nav{display:none}body{background:#fff}}
+</style>
+</head>
+<body>
+<header>
+  <h1>【论文完整标题】</h1>
+  <div class="sub">组会文献解读 · 汇报人：____ · 日期：____</div>
+</header>
+<div class="layout">
+<nav>
+  <a href="#info">0 论文信息</a>
+  <a href="#oneline">1 一句话总结</a>
+  <a href="#question">2 核心问题</a>
+  <a href="#landscape">3 研究现状与缺口</a>
+  <a href="#delta">4 本文增量</a>
+  <a href="#methods">5 研究方法</a>
+  <a href="#results">6 结果与图表解读</a>
+  <a href="#critique">7 批判性评价</a>
+  <a href="#journal">8 期刊定位</a>
+  <a href="#cnjournal">9 国内期刊适配</a>
+  <a href="#talk">附A 讲稿提纲</a>
+  <a href="#glossary">附B 术语与延伸阅读</a>
+</nav>
+<main>
+  <h2 id="info">0 · 论文信息</h2>
+  <div class="infocard"><table><!-- 标题/作者/期刊/DOI/代码数据 --></table></div>
+
+  <h2 id="oneline">1 · 一句话总结</h2>
+  <div class="oneliner"><!-- 大白话一句话 --></div>
+
+  <h2 id="question">2 · 核心问题</h2>
+  <h2 id="landscape">3 · 研究现状与缺口</h2>
+  <h2 id="delta">4 · 本文增量</h2>
+  <h2 id="methods">5 · 研究方法</h2>
+
+  <h2 id="results">6 · 结果与图表解读</h2>
+  <!-- 每张图的推荐结构：
+  <figure>
+    <img src="data:image/png;base64,....">
+    <figcaption><b>图 1</b> 原图注翻译/概括</figcaption>
+  </figure>
+  <p>这张图怎么来的：…（方法X + 数据Z）</p>
+  <div class="panel-read"><b>面板 A</b>：…</div>
+  <div class="panel-read"><b>面板 B</b>：…</div>
+  <div class="story">…（去掉这张图论证塌在哪）</div>
+  -->
+
+  <h2 id="critique">7 · 批判性评价</h2>
+  <h2 id="journal">8 · 期刊定位</h2>
+  <h2 id="cnjournal">9 · 国内期刊适配</h2>
+  <p class="note">分区/影响因子等数据查询日期：____；投稿决定请结合导师意见。</p>
+
+  <h2 id="talk">附录 A · 组会讲稿提纲</h2>
+  <h2 id="glossary">附录 B · 术语表与延伸阅读</h2>
+</main>
+</div>
+<footer>本解读由 AI 辅助生成，供组会汇报参考；引用请核对论文原文。</footer>
+</body>
+</html>

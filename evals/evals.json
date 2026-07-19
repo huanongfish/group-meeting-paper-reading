@@ -1,0 +1,13 @@
+{
+  "skill_name": "group-meeting-paper-reading",
+  "evals": [
+    {
+      "id": 0,
+      "name": "shuisheng-full-reading",
+      "prompt": "这周组会轮到我讲文献了，帮我把这篇论文（/tmp/test_paper.pdf）做一份深度解读，我要在博士组会上汇报。把逻辑讲清楚，图表也要读透，最后帮我看看期刊定位。",
+      "expected_output": "一份中文解读文档，Markdown + 单文件 HTML 两种格式，含论文图表内嵌；覆盖核心问题、研究现状与缺口、增量贡献、方法、逐图逐面板解读、批判评价、期刊定位（含高攀/低就判断或投稿建议）、国内期刊适配、组会讲稿提纲。",
+      "files": ["/tmp/test_paper.pdf"],
+      "assertions": []
+    }
+  ]
+}
