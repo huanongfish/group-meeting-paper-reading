@@ -27,6 +27,11 @@ description: 深度解读一篇学术论文，产出博士组会文献汇报用�
    - `<论文短标题>_解读.html`：**必须使用本技能附带的脚本来生成**。在写好 Markdown 文件后，运行 `python scripts/generate_html.py <markdown_file>`。该脚本会自动基于 `assets/template.html` 骨架注入内容、将图片转为 base64 内嵌、并配置好侧边栏目录与样式。生成后打开检查一遍图片是否都显示完整。
    - **Markdown 写法注意（脚本的已知边界）**：① 文件开头的 YAML frontmatter（`title:` / `subtitle:` / `date:`）会被脚本抽出来填进页眉，**不会**出现在正文里，所以正文里不要再写一遍 `# 标题`；② `date:` 的值会被脚本自动加上「日期：」前缀，所以只写日期本身（`date: "2026-09-12"`），不要再写「解读日期：……」；③ 图片可以用 `![alt](figures/x.png)`，也可以用裸 HTML 的 `<figure><img src="figures/x.png"><figcaption>…</figcaption></figure>`（脚本两种都会内嵌 base64）；④ **`<figcaption>` 内部不会被 Markdown 解析**，要加粗必须写 `<b>…</b>` 而不是 `**…**`，否则会原样显示星号；⑤ **凡是自己写的 `<div>` 且内容含 Markdown，都必须加 `markdown="1"`**——不只是 `infocard`，`panel-read` / `story` / `note` / `oneliner` 同理。脚本行为对所有 `<div>` 一致，忘了加就会出现「满篇 `**` 星号」这一典型症状（本技能 2026-09 修订前只提醒了 `infocard`，导致 `panel-read` / `story` / `oneliner` / `note` 里的加粗全部漏解析，一次就漏了 242 处）；⑥ 结构里的**第 0 节与第 1 节也要显式写 `## 0. 论文信息卡` / `## 1. 一句话总结`**——很容易只写 div 而漏标题，结果侧边栏目录从第 2 节开始。
    - **生成后必做的三项自检**（比"打开看一眼"更可靠，用命令行即可）：① `grep -c '\*\*' 输出.html` 应为 **0**（非 0 说明有 div 漏了 `markdown="1"`，或 figcaption 里写了 `**`）；② 统计 `<h2` 数量，应等于该文档的章节数（按本技能结构应为 12）；③ 统计 `data:image/` 出现次数，应等于实际图片数（注意 `assets/template.html` 顶部注释里有一段示例 `<img src="data:image/png;base64,...">`，会被计入，属正常）。三项都过再用浏览器复核图片。
+   - **模型签名（必填）**：frontmatter 里写 `model:`，脚本会把它放到页眉和页脚。例如 `model: "Claude Opus 5.5 (claude-opus-5-5)"`。
+     - 名称和版本照**本次会话系统环境给出的模型名/ID** 抄写，不要凭印象写；环境没有给出就写 `model: "未确认"`，不要猜，也不要写成更强的模型。
+     - 可选 `model_effort:`（只在环境明确给出推理强度时写）、`model_note:`（如"正文 A 模型撰写，B 模型复核""含原始数据重算"）。子代理或其他模型写了部分内容时必须在 `model_note` 里写明。
+     - 换模型重写或实质修改后，更新 `model:` 与 `date:`，并在 `model_note` 写明原模型；只改错字不换签名。
+     - 旧解读没有可靠记录的，保持"未记录"，不补猜。
 8. **交付**两个文件，并用一两句话说明。不要生成 Word/PDF/PPT，除非用户明确要求。
 9. **关联回 Zotero**（自检通过后执行；每次重新生成 HTML 后也要再跑一次）：
    - 先空跑 `python3 scripts/link_to_zotero.py <解读.html> --doi <DOI> --dry-run`，看清条目和目标路径是否正确，再去掉 `--dry-run` 正式执行。没有 DOI 时用 `--key <Zotero条目key>`。

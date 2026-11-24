@@ -1,4 +1,5 @@
 import re
+import html
 import base64
 import os
 import argparse
@@ -106,6 +107,23 @@ def main():
         template = template.replace('日期：____', f'日期：{date_text}')
     if yaml_sub:
         template = template.replace('组会文献解读 · 汇报人：____', f'{sub_text} · 汇报人：____')
+
+    # Model signature: only what the frontmatter records; never guessed here.
+    def field(name):
+        m = re.search(rf'^{name}:[ \t]*["\']?(.*?)["\']?[ \t]*$', frontmatter, re.M)
+        return m.group(1).strip() if m else ""
+
+    model = field("model")
+    signature = f"解读模型：{model or '未记录'}"
+    if field("model_effort"):
+        signature += f" · 推理强度：{field('model_effort')}"
+    if field("model_note"):
+        signature += f" · {field('model_note')}"
+    if date_text and model:
+        signature += f" · {date_text}"
+    if not model:
+        print("Warning: frontmatter has no `model:`; signature shows 未记录")
+    template = template.replace("<!-- SIGNATURE -->", html.escape(signature))
 
     # Inject into placeholders
     final_html = template.replace("<!-- NAV -->", toc_html)

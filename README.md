@@ -48,6 +48,10 @@ group-meeting-paper-reading/
 
 依赖：图表提取需要 `pip install pymupdf`；生成 HTML 需要 `pip install markdown`。
 
+## 模型签名
+
+在 Markdown 的 frontmatter 写 `model: "模型名 (模型ID)"`（可选 `model_effort`、`model_note`），生成的 HTML 会在页眉和页脚显示。没写则显示“未记录”，脚本不猜。
+
 ## 关联回 Zotero（可选）
 
 ```bash
