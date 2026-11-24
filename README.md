@@ -30,7 +30,10 @@ group-meeting-paper-reading/
 │   ├── figure-reading.md         # 读图方法：怎么把一张图讲透
 │   └── journal-analysis.md       # 期刊定位分析（英文刊/中文刊双标尺）
 ├── scripts/
-│   └── extract_figures.py        # 从 PDF 提取/渲染图表（PyMuPDF）
+│   ├── extract_figures.py        # 从 PDF 提取/渲染图表（PyMuPDF）
+│   ├── extract_docx_media.py     # 从 docx 提取正文与图片
+│   ├── generate_html.py          # Markdown → 单文件 HTML
+│   └── link_to_zotero.py         # 把解读关联回 Zotero 条目并打标签
 └── assets/
     └── template.html             # 单文件 HTML 输出模板（KaTeX + 内嵌图）
 ```
@@ -43,7 +46,17 @@ group-meeting-paper-reading/
 
 安装后，只要说一句"帮我把这篇论文做一份组会解读"并给出论文，即可触发。
 
-依赖：图表提取需要 `pip install pymupdf`。
+依赖：图表提取需要 `pip install pymupdf`；生成 HTML 需要 `pip install markdown`。
+
+## 关联回 Zotero（可选）
+
+```bash
+python3 scripts/link_to_zotero.py <解读.html> --doi <DOI> --dry-run   # 先空跑
+python3 scripts/link_to_zotero.py <解读.html> --doi <DOI>
+```
+
+前提：Zotero 正在运行并启用本地 API（端口 23119），安装 Zotero MCP Plugin 并开启写权限（端口 23120）。
+脚本会把 HTML 放到 PDF 同一文件夹并挂为链接附件（PDF 在 Zotero storage 时改为导入），给条目加标签 `📖 状态:已精读`（可用 `--tag` 改），不删任何标签；重跑只更新原附件。条目不唯一、PDF 不唯一或同名文件冲突时停下，不猜、不覆盖。
 
 ## 许可
 
